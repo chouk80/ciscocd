@@ -1,0 +1,21 @@
+tasks:
+  - name: install git
+    become: yes
+    become_method: sudo
+    yum: name=git state=latest
+  - name: clone petclinic
+    git: dest=/home/ec2-user/petclinic repo=https://github.com/chouk80/spring-petclinic.git
+  - name: clone ciscocd
+    git: dest=/home/ec2-user/ciscocd repo=https://github.com/chouk80/ciscocd.git update=no
+  - name: install docker
+    become_method: sudo
+    become: yes
+    yum: name=docker state=latest
+  - name: add group docker to ec2-user
+    become: yes
+    become_method: sudo
+    user: name=ec2-user  group=docker  append=yes
+  - name: start docker
+    service: name=docker state=started
+    become: yes
+    become_method: sudo
